@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -14,24 +16,36 @@ class StudentController extends Controller
 
     public function ShowStudent()
     {
-        return json_encode(["texto" =>"muestra todos los alumnos"]);
+        $students = Student::all();
+        return json_encode($students);
     }
     
-    public function ShowByMatricula()
+    public function ShowByMatricula($matricula)
     {
-        return json_encode(["texto" =>"show by matricula"]);
-    }
-
-    
-    public function ShowByMatricula_level()
-    {
-        return json_encode(["texto" =>"show by matricula y nivel"]);
+        $student = Student::where("matricula",$matricula)->get();
+        $service_hours = DB::select('select al.id, al.matricula, al.pais, als.nivel, als.cantidad, s.nombre from alumnos al LEFT JOIN alumno_servicios als ON al.id = als.alumno_id RIGHT JOIN servicios s ON als.servicio_id = s.id WHERE al.id = ?',[$student[0]->id]);
+        return json_encode($service_hours);
     }
 
     
-    public function ShowByMatricula_level_id()
+    public function ShowByMatricula_level($matricula,$nivel)
     {
-        return json_encode(["texto" =>"show by matricula añadiendo nivel y ID"]);
+        $student = Student::where("matricula",$matricula)->get();
+        $service_hours = DB::select('select al.id, al.matricula, al.pais, als.nivel, als.cantidad, s.nombre from alumnos al LEFT JOIN alumno_servicios als ON al.id = als.alumno_id RIGHT JOIN servicios s ON als.servicio_id = s.id WHERE al.id = ? AND als.nivel = ?',[$student[0]->id, $nivel]);
+        return json_encode($service_hours);
+    }
+
+    
+    public function ShowByMatricula_level_id($matricula,$nivel,$id)
+    {
+        $student = Student::where("matricula",$matricula)->get();
+        $service_hours = DB::select('select al.id, al.matricula, al.pais, als.nivel, als.cantidad, s.nombre from alumnos al LEFT JOIN alumno_servicios als ON al.id = als.alumno_id RIGHT JOIN servicios s ON als.servicio_id = s.id WHERE al.id = ? AND als.nivel = ?',[$student[0]->id, $nivel]);
+        try {
+            return json_encode($service_hours[$id]);
+        } catch (\Throwable $th) {
+            echo "No existe tal registro";
+        }
+        
     }
 
 
