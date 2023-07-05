@@ -16,7 +16,7 @@ class StudentController extends Controller
 
     public function ShowStudent()
     {
-        $students = Student::all();
+        $students = DB::select("select u.id, u.name, u.email, a.matricula, a.pais from users u left join alumnos a on u.id = a.user_id; ");
         return json_encode($students);
     }
     
