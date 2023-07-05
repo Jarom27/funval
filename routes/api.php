@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post("/students/service/add", [StudentController::class,"add_Service_Hour"]);
 Route::get("/students/{matricula}/{nivel}/{id}" ,  [StudentController::class, "ShowByMatricula_level_id"]);
 Route::get("/students/{matricula}/{nivel}" ,  [StudentController::class, "ShowByMatricula_level"]);
 Route::get("/students/{matricula}" ,  [StudentController::class, "ShowByMatricula" ]);
