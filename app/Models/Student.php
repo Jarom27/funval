@@ -12,6 +12,9 @@ class Student extends Model
     use HasFactory;
     protected $table = "alumnos";
 
+    public function user():BelongsTo{
+        return $this->belongsTo(User::class,'user_id');
+    }
     public function curso(): BelongsTo{
         return $this->belongsTo(Curso::class,'curso_id');
     }

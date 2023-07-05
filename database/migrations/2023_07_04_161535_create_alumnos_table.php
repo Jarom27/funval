@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("pais");
             $table->foreignId("curso_id")->constrained();
             $table->foreignId("recrutadore_id")->constrained();
+            $table->foreignId("user_id")->constrained();
             $table->timestamps();
         });
     }
